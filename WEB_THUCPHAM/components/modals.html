@@ -1,0 +1,100 @@
+<!-- MODAL ĐĂNG NHẬP -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content login-modal-content">
+            <button type="button" class="close close-modal" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="modal-body">
+                <h2 class="modal-title text-center mb-4" id="loginModalLabel">ĐĂNG NHẬP</h2>
+                <form id="loginForm">
+                    <div class="form-group mb-3">
+                        <label for="email">Email hoặc số điện thoại <span class="required">*</span></label>
+                        <input type="email" class="form-control login-input" id="email" placeholder="" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="password">Mật khẩu <span class="required">*</span></label>
+                        <input type="password" class="form-control login-input" id="password" placeholder="" required>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input type="checkbox" class="form-check-input" id="rememberPassword">
+                        <label class="form-check-label" for="rememberPassword">Ghi nhớ mật khẩu</label>
+                    </div>
+                    <button type="submit" class="btn btn-login btn-block mb-3">Đăng nhập</button>
+                </form>
+                <p class="text-center forgot-password">
+                    <a href="#">Quên mật khẩu?</a>
+                </p>
+                <div class="social-login">
+                    <button class="btn-social facebook" type="button">
+                        <i class="fa-brands fa-facebook"></i>
+                    </button>
+                    <button class="btn-social google" type="button">
+                        <i class="fa-brands fa-google"></i>
+                    </button>
+                </div>
+                <p class="text-center mt-3 signup-link">
+                    <span>Tạo tài khoản mới</span>
+                    <a href="#" class="btn-create-account">Tạo tài khoản</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END MODAL ĐĂNG NHẬP -->
+
+<!-- MODAL ĐĂNG KÝ -->
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content register-modal-content">
+            <button type="button" class="close close-modal" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="modal-body">
+                <h2 class="modal-title text-center mb-4" id="registerModalLabel">ĐĂNG KÝ</h2>
+                <form id="registerForm">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="reg-phone">Số điện thoại hoặc email <span class="required">*</span></label>
+                            <input type="text" class="form-control register-input" id="reg-phone" placeholder="" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="reg-dob">Ngày sinh <span class="required">*</span></label>
+                            <input type="date" class="form-control register-input" id="reg-dob" placeholder="" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="reg-username">Tên đăng nhập <span class="required">*</span></label>
+                            <input type="text" class="form-control register-input" id="reg-username" placeholder="" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="reg-gender">Giới tính <span class="required">*</span></label>
+                            <input type="text" class="form-control register-input" id="reg-gender" placeholder="" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="reg-password">Mật khẩu <span class="required">*</span></label>
+                            <input type="password" class="form-control register-input" id="reg-password" placeholder="" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="reg-confirm-password">Xác nhận mật khẩu <span class="required">*</span></label>
+                            <input type="password" class="form-control register-input" id="reg-confirm-password" placeholder="" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-register btn-block mb-3">Đăng ký</button>
+                </form>
+                <div class="social-login">
+                    <button class="btn-social facebook" type="button">
+                        <i class="fa-brands fa-facebook"></i>
+                    </button>
+                    <button class="btn-social google" type="button">
+                        <i class="fa-brands fa-google"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END MODAL ĐĂNG KÝ -->

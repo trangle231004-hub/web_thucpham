@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Đơn hàng - Giỏ hàng hiện tại</title>
+    <link rel="icon" href="./assets/images/img_Logo.png" type="image/png">
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/HomePage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <style>
+        .orders-container{ padding:40px 0 }
+        .orders-title{ text-align:center; color:#6b2fbf; font-weight:700; margin-bottom:24px }
+        .order-card{ background:linear-gradient(180deg,#fbfff6,#f7fff9); padding:18px; border-radius:8px }
+        .order-item{ display:flex; gap:12px; align-items:center; padding:12px 0; border-bottom:1px dashed rgba(0,0,0,0.05) }
+        .order-item img{ width:84px; height:84px; object-fit:cover; border-radius:6px }
+        .order-item .meta{ flex:1 }
+        .order-summary{ margin-top:18px; display:flex; justify-content:space-between; align-items:center }
+        .btn-checkout{ background:#6cb03f; color:#fff; border:none; padding:12px 20px; border-radius:6px }
+        .empty-note{ text-align:center; color:#666; padding:28px 0 }
+    </style>
+</head>
+<body>
+    <div id="header-container"></div>
+
+    <div class="container orders-container">
+        <div class="row justify-content-center">
+            <div class="col-10">
+                <h2 class="orders-title">ĐƠN HÀNG</h2>
+                <div class="order-card" id="orderCard">
+                    <div id="orderList">
+                        <!-- Items rendered here -->
+                    </div>
+
+                    <div id="orderFooter" style="display:none">
+                        <div class="order-summary">
+                            <div>
+                                <strong>Tổng tiền:</strong>
+                            </div>
+                            <div>
+                                <strong id="orderTotal">0₫</strong>
+                            </div>
+                        </div>
+
+                        <div class="text-right mt-3">
+                            <button id="checkoutBtn" class="btn btn-checkout">THANH TOÁN</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-container"></div>
+    <div id="modals-container"></div>
+
+    <script>
+        function formatVnd(n){ try{ return Number(n).toLocaleString('vi-VN') + '₫'; }catch(e){ return n + '₫'; } }
+
+        function escapeHtml(str){ return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+        function renderOrders(){
+            var listEl = document.getElementById('orderList');
+            var footer = document.getElementById('orderFooter');
+            var totalEl = document.getElementById('orderTotal');
+            var cart = JSON.parse(localStorage.getItem('cart')||'[]');
+            console.debug('orders.renderOrders cart=', cart);
+            if(!listEl) return;
+            listEl.innerHTML = '';
+            if(!cart || cart.length === 0){
+                listEl.innerHTML = '<div class="empty-note">Giỏ hàng trống — chưa có sản phẩm nào được thêm.</div>';
+                footer.style.display = 'none';
+                return;
+            }
+
+            var total = 0;
+            cart.forEach(function(item, idx){
+                var itemEl = document.createElement('div');
+                itemEl.className = 'order-item';
+
+                var img = document.createElement('img'); img.src = item.image || './assets/images/img_Logo.png'; img.alt = item.name || '';
+                var meta = document.createElement('div'); meta.className = 'meta';
+                meta.innerHTML = '<div style="font-weight:600;color:#2b2b2b">'+ escapeHtml(item.name) +'</div>'
+                    + '<div style="color:#6b6b6b;margin-top:6px;">Số lượng: '+ (item.quantity||0) +'</div>'
+                    + '<div style="color:#6b6b6b; margin-top:6px;">Giá: '+ formatVnd(item.price) +'</div>';
+
+                var subtotal = (item.price||0) * (item.quantity||0);
+                total += subtotal;
+
+                var right = document.createElement('div');
+                right.style.textAlign = 'right';
+                right.innerHTML = '<div style="font-weight:700">'+ formatVnd(subtotal) +'</div>'
+                    + '<div style="margin-top:8px"><a href="#" data-idx="'+idx+'" class="remove-item" style="color:#b33">Xóa</a></div>';
+
+                itemEl.appendChild(img); itemEl.appendChild(meta); itemEl.appendChild(right);
+                listEl.appendChild(itemEl);
+            });
+
+            totalEl.textContent = formatVnd(total);
+            footer.style.display = 'block';
+
+            // attach remove handlers
+            var removes = document.querySelectorAll('.remove-item');
+            removes.forEach(function(a){
+                a.addEventListener('click', function(e){
+                    e.preventDefault();
+                    var i = parseInt(a.getAttribute('data-idx'));
+                    removeCartItem(i);
+                });
+            });
+        }
+
+        function removeCartItem(index){
+            var cart = JSON.parse(localStorage.getItem('cart')||'[]');
+            if(index>=0 && index < cart.length){ cart.splice(index,1); localStorage.setItem('cart', JSON.stringify(cart)); }
+            // notify other components
+            try{ window.dispatchEvent(new CustomEvent('cartUpdated', { detail: cart })); }catch(e){}
+            renderOrders();
+        }
+
+        document.addEventListener('DOMContentLoaded', function(){
+            // ensure header/footer update
+            try{ if(typeof updateAuthUI === 'function') updateAuthUI(); }catch(e){}
+            try{ if(window.updateCartCount) updateCartCount(); }catch(e){}
+
+            renderOrders();
+
+            // live update when cart changes elsewhere
+            window.addEventListener('cartUpdated', function(e){
+                try{ renderOrders(); }catch(err){ console.warn('orders: cartUpdated handler failed', err); }
+            });
+
+            document.getElementById('checkoutBtn').addEventListener('click', function(){
+                // Simple demo checkout: move current cart into orders history and clear cart
+                var cart = JSON.parse(localStorage.getItem('cart')||'[]');
+                if(!cart || cart.length===0){ alert('Giỏ hàng trống'); return; }
+
+                var orders = JSON.parse(localStorage.getItem('orders')||'[]');
+                var order = { id: 'ORD'+Date.now(), items: cart, total: cart.reduce(function(s,i){return s + (i.price||0)*(i.quantity||0);},0), createdAt: Date.now() };
+                orders.push(order);
+                localStorage.setItem('orders', JSON.stringify(orders));
+
+                // clear cart
+                localStorage.setItem('cart', JSON.stringify([]));
+                try{ window.dispatchEvent(new CustomEvent('cartUpdated', { detail: [] })); }catch(e){}
+
+                alert('Thanh toán giả lập thành công — đơn hàng đã được lưu.');
+                renderOrders();
+                try{ if(window.updateCartCount) updateCartCount(); }catch(e){}
+            });
+        });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="assets/js/component-loader.js"></script>
+</body>
+</html>

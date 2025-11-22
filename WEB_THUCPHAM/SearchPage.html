@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kết quả tìm kiếm - Cửa hàng thực phẩm</title>
+    <!-- Link img web -->
+    <link rel="icon" href="./assets/images/img_Logo.png" type="image/png">
+    <!-- Link CSS -->
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/HomePage.css">
+    <link rel="stylesheet" href="assets/css/CategoryPage.css">
+    <!-- Link Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <!-- HEADER COMPONENT CONTAINER -->
+    <div id="header-container"></div>
+    <!-- END HEADER COMPONENT -->
+
+    <!-- MAIN CONTENT -->
+    <main class="category-main">
+        <div class="container">
+            <!-- Breadcrumb -->
+            <div class="breadcrumb-section">
+                <a href="HomePage.html">Trang chủ</a> / <span id="searchTitle">Kết quả tìm kiếm</span>
+            </div>
+
+            <div class="row mt-4">
+                <!-- Sidebar Danh Mục -->
+                <div class="col-lg-3">
+                    <div class="category-sidebar">
+                        <div class="category-title">LỌC DANH MỤC</div>
+                        <ul class="category-list">
+                            <li><a href="SearchPage.html?q=" class="filter-all"><i class="fa-solid fa-right-long"></i> Tất cả danh mục</a></li>
+                            <li><a href="SearchPage.html?q=&filter=hai-san" class="filter-cat"><i class="fa-solid fa-right-long"></i> Hải sản vùng miền</a></li>
+                            <li><a href="SearchPage.html?q=&filter=hang-kho" class="filter-cat"><i class="fa-solid fa-right-long"></i> Hàng khô</a></li>
+                            <li><a href="SearchPage.html?q=&filter=rau-cu" class="filter-cat"><i class="fa-solid fa-right-long"></i> Rau củ hữu cơ</a></li>
+                            <li><a href="SearchPage.html?q=&filter=thit-ca" class="filter-cat"><i class="fa-solid fa-right-long"></i> Thịt cá dân dã</a></li>
+                            <li><a href="SearchPage.html?q=&filter=trai-cay" class="filter-cat"><i class="fa-solid fa-right-long"></i> Trái cây theo mùa</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Products Section -->
+                <div class="col-lg-9">
+                    <!-- Filter & Sort Bar -->
+                    <div class="filter-bar">
+                        <div class="result-count">
+                            Tìm thấy <span id="productCount">0</span> kết quả cho "<span id="searchQuery"></span>"
+                        </div>
+                        <div class="sort-dropdown">
+                            <select id="sortSelect" class="form-control">
+                                <option value="default">Sắp xếp mặc định</option>
+                                <option value="price-asc">Sắp xếp theo giá: từ thấp đến cao</option>
+                                <option value="price-desc">Sắp xếp theo giá: từ cao đến thấp</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Products Grid -->
+                    <div id="productsContainer" class="products-grid">
+                        <!-- Products sẽ được thêm bằng JavaScript -->
+                    </div>
+
+                    <!-- No Results Message -->
+                    <div id="noResultsMessage" style="display: none; text-align: center; padding: 40px;">
+                        <i class="fas fa-search" style="font-size: 48px; color: #ccc; margin-bottom: 20px;"></i>
+                        <p style="font-size: 18px; color: #666;">Không tìm thấy sản phẩm nào</p>
+                        <p style="color: #999;">Vui lòng thử lại với từ khóa khác</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- END MAIN CONTENT -->
+
+    <!-- FOOTER COMPONENT CONTAINER -->
+    <div id="footer-container"></div>
+    <!-- END FOOTER COMPONENT -->
+
+    <!-- MODALS COMPONENT CONTAINER -->
+    <div id="modals-container"></div>
+    <!-- END MODALS COMPONENT -->
+
+    <!-- SLIDE -> Bootstrap 4 JS + Popper + jQuery (phải đúng thứ tự) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <!-- Component Loader -->
+    <script src="assets/js/component-loader.js"></script>
+    <!-- Search Script -->
+    <script src="assets/js/CategoryPage.js"></script>
+    <script>
+        // Use shared productData from CategoryPage.js
+        const allProducts = productData;
+
+        // Helper: split into words (Unicode letters), lowercased
+        function splitWordsUnicode(text) {
+            const match = (text || '').toLowerCase().match(/\p{L}+/gu);
+            return match || [];
+        }
+
+        // Helper: remove diacritics and lowercase
+        function stripDiacritics(text) {
+            return (text || '').toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '');
+        }
+
+        function matchesQuery(productName, rawQuery) {
+            const q = (rawQuery || '').trim();
+            if (!q) return true;
+
+            const qLower = q.toLowerCase();
+            const productLower = (productName || '').toLowerCase();
+            const productWords = splitWordsUnicode(productLower);
+
+            // Exact (accent-sensitive) whole-word match
+            if (productWords.includes(qLower)) return true;
+
+            // If query contains a space (phrase), allow full accent-sensitive substring match
+            if (qLower.includes(' ') && productLower.includes(qLower)) return true;
+
+            // If user typed diacritics, do not fallback to accent-insensitive matching
+            const hasDiacritics = /[\u0300-\u036f]/.test(q.normalize('NFD'));
+            if (hasDiacritics) return false;
+
+            // For short queries without diacritics, require at least 2 chars
+            if (qLower.length < 2) return false;
+
+            // Accent-insensitive whole-word match
+            const qNorm = stripDiacritics(qLower);
+            const productWordsNorm = productWords.map(w => stripDiacritics(w));
+            if (productWordsNorm.includes(qNorm)) return true;
+
+            // Do not match by substring across words
+            return false;
+        }
+
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param) || '';
+        }
+
+        function displayProducts(products, sortType = 'default') {
+            const container = document.getElementById('productsContainer');
+            const noResultsMsg = document.getElementById('noResultsMessage');
+            const productCount = document.getElementById('productCount');
+            const searchQuery = getQueryParam('q');
+
+            // Sort products
+            let sortedProducts = [...products];
+            if (sortType === 'price-asc') {
+                sortedProducts.sort((a, b) => a.price - b.price);
+            } else if (sortType === 'price-desc') {
+                sortedProducts.sort((a, b) => b.price - a.price);
+            }
+
+            productCount.textContent = sortedProducts.length;
+
+            if (sortedProducts.length === 0) {
+                container.style.display = 'none';
+                noResultsMsg.style.display = 'block';
+                noResultsMsg.innerHTML = `
+                    <i class="fas fa-search" style="font-size: 48px; color: #ccc; margin-bottom: 20px; display: block;"></i>
+                    <p style="font-size: 18px; color: #666; margin: 10px 0;">Không tìm thấy sản phẩm có tên chứa "<strong>${searchQuery}</strong>"</p>
+                    <p style="color: #999;">Vui lòng thử lại với từ khóa khác</p>
+                `;
+            } else {
+                container.style.display = 'grid';
+                noResultsMsg.style.display = 'none';
+                
+                container.innerHTML = sortedProducts.map(product => `
+                    <a href="ProductDetail.html?id=${encodeURIComponent(product.name)}" style="text-decoration: none; color: inherit;">
+                        <div class="product-card">
+                            <img src="${product.image}" alt="${product.name}">
+                            <h6>${product.name}</h6>
+                            <div class="price">${product.price.toLocaleString('vi-VN')}₫</div>
+                        </div>
+                    </a>
+                `).join('');
+            }
+        }
+
+        function searchProducts() {
+            const searchQuery = getQueryParam('q') || '';
+            const filterCategory = getQueryParam('filter') || '';
+
+            // Update search display
+            document.getElementById('searchQuery').textContent = searchQuery;
+            document.getElementById('searchTitle').textContent = searchQuery ? `Kết quả tìm kiếm: "${searchQuery}"` : 'Kết quả tìm kiếm';
+
+            // Get all products
+            let searchResults = [];
+            
+            if (filterCategory) {
+                // Filter by category
+                if (allProducts[filterCategory]) {
+                    searchResults = allProducts[filterCategory];
+                }
+            } else {
+                // Search in all products
+                Object.values(allProducts).forEach(products => {
+                    searchResults = searchResults.concat(products);
+                });
+            }
+
+            // Filter by search query (use whole-word matching)
+            if (searchQuery.trim()) {
+                searchResults = searchResults.filter(product => matchesQuery(product.name, searchQuery));
+            }
+
+            // Display results
+            displayProducts(searchResults);
+        }
+
+        // Handle sort change
+        document.addEventListener('DOMContentLoaded', function() {
+            searchProducts();
+
+            const sortSelect = document.getElementById('sortSelect');
+            sortSelect.addEventListener('change', function() {
+                const searchQuery = getQueryParam('q') || '';
+                const filterCategory = getQueryParam('filter') || '';
+
+                let searchResults = [];
+                if (filterCategory) {
+                    if (allProducts[filterCategory]) {
+                        searchResults = allProducts[filterCategory];
+                    }
+                } else {
+                    Object.values(allProducts).forEach(products => {
+                        searchResults = searchResults.concat(products);
+                    });
+                }
+
+                if (searchQuery.trim()) {
+                    searchResults = searchResults.filter(product => matchesQuery(product.name, searchQuery));
+                }
+
+                displayProducts(searchResults, this.value);
+            });
+        });
+    </script>
+</body>
+
+</html>

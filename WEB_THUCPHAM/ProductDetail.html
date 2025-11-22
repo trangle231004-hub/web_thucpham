@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Sản Phẩm</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="assets/css/base.css" rel="stylesheet">
+    <link href="assets/css/HomePage.css" rel="stylesheet">
+    <link href="assets/css/ProductDetail.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <div id="header-container"></div>
+
+    <!-- Breadcrumb -->
+    <div class="container mt-3">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="HomePage.html">Trang chủ</a></li>
+                <li class="breadcrumb-item" id="breadcrumb-category"><a href="#">Danh mục</a></li>
+                <li class="breadcrumb-item active" id="breadcrumb-product">Sản phẩm</li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container product-detail-container mb-5">
+        <div class="row">
+            <!-- Left Side - Category Sidebar -->
+            <div class="col-lg-3">
+                <div class="category-sidebar">
+                    <div class="category-title">DANH MỤC</div>
+                    <ul class="category-list">
+                        <li><a href="CategoryPage.html?category=hang-kho"><i class="fas fa-arrow-right"></i> Hàng khô</a></li>
+                        <li><a href="CategoryPage.html?category=hai-san"><i class="fas fa-arrow-right"></i> Hải sản vùng miền</a></li>
+                        <li><a href="CategoryPage.html?category=rau-cu"><i class="fas fa-arrow-right"></i> Rau củ hữu cơ</a></li>
+                        <li><a href="CategoryPage.html?category=thit-ca"><i class="fas fa-arrow-right"></i> Thịt cá dân dã</a></li>
+                        <li><a href="CategoryPage.html?category=trai-cay"><i class="fas fa-arrow-right"></i> Trái cây theo mùa</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Center - Product Images -->
+            <div class="col-lg-5">
+                <div class="product-image-section">
+                    <div class="main-image">
+                        <img id="main-image" src="" alt="Sản phẩm">
+                    </div>
+                    <div class="thumbnail-gallery mt-3">
+                        <div class="thumbnail active" onclick="changeMainImage(this)">
+                            <img src="assets/images/List_Image_Products_Sell/Sell_1.png" alt="Thumbnail 1">
+                        </div>
+                        <div class="thumbnail" onclick="changeMainImage(this)">
+                            <img src="assets/images/List_Image_Products_Sell/Sell_2.png" alt="Thumbnail 2">
+                        </div>
+                        <div class="thumbnail" onclick="changeMainImage(this)">
+                            <img src="assets/images/List_Image_Products_Sell/Sell_3.png" alt="Thumbnail 3">
+                        </div>
+                        <div class="thumbnail" onclick="changeMainImage(this)">
+                            <img src="assets/images/List_Image_Products_Sell/Sell_4.png" alt="Thumbnail 4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side - Product Info -->
+            <div class="col-lg-4">
+                <div class="product-info-section">
+                    <h1 class="product-name" id="product-name">Tên sản phẩm</h1>
+                    
+                    <div class="product-rating mb-3">
+                        <span class="stars">★★★★★</span>
+                        <span class="review-count">(24 đánh giá)</span>
+                    </div>
+
+                    <!-- Price Section -->
+                    <div class="price-section mb-4">
+                        <div class="product-price" id="product-price">0 đ</div>
+                    </div>
+
+                    <!-- Quantity Section -->
+                    <div class="quantity-section mb-4">
+                        <label>Số lượng:</label>
+                        <div class="quantity-control">
+                            <button onclick="decreaseQuantity()" class="qty-btn">−</button>
+                            <input type="number" id="quantity-input" class="quantity-input" value="1" min="1" readonly>
+                            <button onclick="increaseQuantity()" class="qty-btn">+</button>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons mb-4">
+                        <button class="btn-add-cart w-100 mb-2" onclick="addToCart()">
+                            <i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
+                        </button>
+                        <button class="btn-wishlist w-100" onclick="addToWishlist()">
+                            <i class="fas fa-heart"></i> Yêu thích
+                        </button>
+                    </div>
+
+                    <!-- Info Box -->
+                    <div class="info-box">
+                        <p><i class="fas fa-box"></i> <strong>Khối lượng:</strong> <span id="weight">200g</span></p>
+                        <p><i class="fas fa-calendar"></i> <strong>Bảo quản:</strong> <span id="storage">Nơi khô ráo, thoáng mát</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Section -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="description-section">
+                    <h2 class="section-title">ℹ️ Mô tả sản phẩm</h2>
+                    <p class="description-content" id="product-description">Đang tải thông tin...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+    <!-- Modals -->
+    <div id="modals-container"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/component-loader.js"></script>
+    <script src="assets/js/CategoryPage.js"></script>
+    <script src="assets/js/ProductDetail.js"></script>
+</body>
+</html>

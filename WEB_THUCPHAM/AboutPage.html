@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Về chúng tôi - Cửa hàng thực phẩm</title>
+    <!-- Link img web -->
+    <link rel="icon" href="./assets/images/img_Logo.png" type="image/png">
+    <!-- Link CSS -->
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/HomePage.css">
+    <link rel="stylesheet" href="assets/css/AboutPage.css">
+    <!-- Link Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <!-- HEADER COMPONENT CONTAINER -->
+    <div id="header-container"></div>
+    <!-- END HEADER COMPONENT -->
+
+    <!-- MAIN CONTENT -->
+    <main class="about-main">
+        <div class="container">
+            <!-- Breadcrumb -->
+            <div class="breadcrumb-section">
+                <a href="HomePage.html">Trang chủ</a> / <span id="articleName">Giới thiệu</span>
+            </div>
+
+            <div class="row mt-4">
+                <!-- Sidebar Chuyên Mục -->
+                <div class="col-lg-3">
+                    <div class="category-sidebar">
+                        <div class="category-title">CHUYÊN MỤC BÀI VIẾT</div>
+                        <ul class="category-list">
+                            <li><a href="AboutPage.html?section=gioithieu" class="section-link"><i class="fa-solid fa-right-long"></i> Giới thiệu</a></li>
+                            <li><a href="AboutPage.html?section=vanhua" class="section-link"><i class="fa-solid fa-right-long"></i> Văn hóa</a></li>
+                            <li><a href="AboutPage.html?section=tailieu" class="section-link"><i class="fa-solid fa-right-long"></i> Tài liệu hướng dẫn</a></li>
+                            <li><a href="AboutPage.html?section=hotro" class="section-link"><i class="fa-solid fa-right-long"></i> Hỗ trợ khách hàng</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Articles Content Section -->
+                <div class="col-lg-9">
+                    <!-- Article -->
+                    <div id="articleContent" class="article-content">
+                        <!-- Content sẽ được thêm bằng JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- END MAIN CONTENT -->
+
+    <!-- FOOTER COMPONENT CONTAINER -->
+    <div id="footer-container"></div>
+    <!-- END FOOTER COMPONENT -->
+
+    <!-- MODALS COMPONENT CONTAINER -->
+    <div id="modals-container"></div>
+    <!-- END MODALS COMPONENT -->
+
+    <!-- SLIDE -> Bootstrap 4 JS + Popper + jQuery (phải đúng thứ tự) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Component Loader -->
+    <script src="assets/js/component-loader.js"></script>
+
+    <!-- About Page Script -->
+    <script>
+        const articleData = {
+            'gioithieu': {
+                title: 'Giới thiệu',
+                content: `
+                    <div class="article-header">
+                        <img src="./assets/images/With_BacTom/story_BacTom.png" alt="Giới thiệu" class="article-image">
+                    </div>
+                    <h2>Về Cửa Hàng Thực Phẩm Sạch</h2>
+                    <p class="intro-text">Thành lập năm 2020, là một trong những cửa hàng thực phẩm sạch hàng đầu tại Đà Nẵng, chuyên cung cấp các sản phẩm tinh chọn từ những nhà sản xuất uy tín nhất.</p>
+                    
+                    <h3>Lịch Sử Phát Triển</h3>
+                    <p>Từ một cửa hàng nhỏ xuất phát với 2 nhân viên, chúng tôi đã phát triển thành một mạng lưới 20 cửa hàng trên khắp Đà Nẵng, phục vụ hàng chục nghìn khách hàng mỗi ngày. Chúng tôi tự hào là người tiên phong trong việc đưa các sản phẩm hữu cơ và thực phẩm sạch vào cuộc sống hàng ngày của các gia đình Đà Nẵng.</p>
+                    
+                    <h3>Tầm Nhìn & Sứ Mệnh</h3>
+                    <p><strong>Tầm nhìn:</strong> Trở thành nhà cung cấp thực phẩm sạch được tin tưởng nhất ở Đà Nẵng, góp phần nâng cao chất lượng cuộc sống cộng đồng.</p>
+                    <p><strong>Sứ mệnh:</strong> Cung cấp các sản phẩm thực phẩm chất lượng cao, an toàn, giá cả hợp lý, với dịch vụ khách hàng xuất sắc.</p>
+                    
+                    <h3>Cam Kết Chất Lượng</h3>
+                    <ul class="quality-list">
+                        <li>✓ Tất cả sản phẩm được kiểm định chất lượng nghiêm ngặt</li>
+                        <li>✓ Sử dụng chuỗi lạnh hiện đại để bảo quản tươi sản phẩm</li>
+                        <li>✓ Tuân thủ các tiêu chuẩn an toàn thực phẩm quốc tế</li>
+                        <li>✓ Hơn 20 năm kinh nghiệm trong lĩnh vực thực phẩm sạch</li>
+                    </ul>
+                `
+            },
+            'vanhua': {
+                title: 'Văn hóa',
+                content: `
+                    <div class="article-header">
+                        <img src="./assets/images/With_BacTom/organic_vegetables.png" alt="Văn hóa" class="article-image">
+                    </div>
+                    <h2>Văn Hóa Công Ty của chúng tôi</h2>
+                    <p class="intro-text">Chúng tôi tin rằng kinh doanh không chỉ là lợi nhuận, mà là sự phục vụ có tâm với cộng đồng.</p>
+                    
+                    <h3>Các Giá Trị Cốt Lõi</h3>
+                    <div class="values-container">
+                        <div class="value-item">
+                            <h4>🌱 Tự Nhiên</h4>
+                            <p>Ưu tiên các sản phẩm hữu cơ, canh tác theo phương pháp tự nhiên, không sử dụng hóa chất bảo vệ thực vật quá mức.</p>
+                        </div>
+                        <div class="value-item">
+                            <h4>✨ Chất Lượng</h4>
+                            <p>Không bao giờ thỏa hiệp với chất lượng. Mỗi sản phẩm phải đáp ứng các tiêu chuẩn cao nhất của chúng tôi.</p>
+                        </div>
+                        <div class="value-item">
+                            <h4>💚 Trách Nhiệm</h4>
+                            <p>Chúng tôi chịu trách nhiệm với khách hàng, cộng đồng và môi trường. Phát triển bền vững là ưu tiên hàng đầu.</p>
+                        </div>
+                    </div>
+                    
+                    <h3>Đội Ngũ Của Chúng Tôi</h3>
+                    <p>Với gần 500 nhân viên tác nghiệp tại 20 cửa hàng, chúng tôi gồm những người có đam mê với thực phẩm sạch và dịch vụ khách hàng. Mỗi thành viên được đào tạo bài bản về kiến thức sản phẩm và kỹ năng phục vụ.</p>
+                    
+                    <h3>Môi Trường Làm Việc</h3>
+                    <ul>
+                        <li>Đội ngũ chuyên nghiệp, thân thiện và lắng nghe khách hàng</li>
+                        <li>Cơ hội phát triển sự nghiệp và đào tạo liên tục</li>
+                        <li>Đảm bảo quyền lợi và phúc lợi cho toàn bộ nhân viên</li>
+                        <li>Môi trường làm việc an toàn, sạch sẽ, hiện đại</li>
+                    </ul>
+                `
+            },
+            'tailieu': {
+                title: 'Tài liệu hướng dẫn',
+                content: `
+                    <div class="article-header">
+                        <img src="./assets/images/With_BacTom/safe_vegetables.png" alt="Tài liệu" class="article-image">
+                    </div>
+                    <h2>Hướng Dẫn Sử Dụng & Bảo Quản Sản Phẩm</h2>
+                    <p class="intro-text">Để giúp bạn tận dụng tối đa các sản phẩm của chúng tôi, hãy tham khảo hướng dẫn chi tiết dưới đây.</p>
+                    
+                    <h3>🥬 Bảo Quản Rau Củ & Trái Cây</h3>
+                    <p><strong>Nhiệt độ lý tưởng:</strong> 2-8°C (tủ lạnh)</p>
+                    <p><strong>Thời gian:</strong> Từ 3-7 ngày tùy theo loại sản phẩm</p>
+                    <ul>
+                        <li>Không nên để sản phẩm dưới ánh nắng trực tiếp</li>
+                        <li>Rửa sạch trước khi bảo quản để loại bỏ bụi bẩn</li>
+                        <li>Để riêng các loại hoa quả từ rau lá để tránh làm hỏng</li>
+                        <li>Kiểm tra thường xuyên, loại bỏ những phần bị hư hỏng</li>
+                    </ul>
+                    
+                    <h3>🐟 Bảo Quản Hải Sản</h3>
+                    <p><strong>Nhiệt độ lý tưởng:</strong> -2 đến 0°C (ngăn lạnh sâu của tủ)</p>
+                    <p><strong>Thời gian:</strong> Tối đa 2-3 ngày nếu để tủ lạnh, tối đa 3 tháng nếu đông lạnh</p>
+                    <ul>
+                        <li>Nên sử dụng trong ngày mua nếu có thể</li>
+                        <li>Lau khô bề mặt trước khi bảo quản</li>
+                        <li>Sử dụng thùng chứa kín để tránh mùi</li>
+                        <li>Rã đông ở tủ lạnh, không dùng nước ấm</li>
+                    </ul>
+                    
+                    <h3>🥩 Bảo Quản Thịt & Cá</h3>
+                    <p><strong>Nhiệt độ lý tưởng:</strong> 0-4°C (ngăn lạnh trên)</p>
+                    <p><strong>Thời gian:</strong> 2-3 ngày ở tủ lạnh, 2-3 tháng ở tủ đông</p>
+                    <ul>
+                        <li>Để ở ngăn lạnh trên cùng để tránh tiếp xúc với các thực phẩm khác</li>
+                        <li>Dùng các bộ chứa riêng để tránh nhiễm chéo</li>
+                        <li>Ghi chú ngày mua để dễ kiểm soát</li>
+                    </ul>
+                    
+                    <h3>⚠️ Lưu Ý Quan Trọng</h3>
+                    <ul class="important-notes">
+                        <li>Luôn kiểm tra ngày sản xuất và hạn sử dụng</li>
+                        <li>Rửa tay sạch trước và sau khi xử lý thực phẩm</li>
+                        <li>Không sử dụng sản phẩm sau khi hết hạn</li>
+                        <li>Nếu thấy bất thường về mùi, màu sắc - đừng tiêu thụ</li>
+                        <li>Liên hệ hotline 0123456789 nếu có thắc mắc</li>
+                    </ul>
+                `
+            },
+            'hotro': {
+                title: 'Hỗ trợ khách hàng',
+                content: `
+                    <div class="article-header">
+                        <img src="./assets/images/List_Image_Main/main_1.png" alt="Hỗ trợ" class="article-image">
+                    </div>
+                    <h2>Dịch Vụ Hỗ Trợ Khách Hàng</h2>
+                    <p class="intro-text">Sự hài lòng của bạn là ưu tiên hàng đầu của chúng tôi. Chúng tôi sẵn sàng giúp đỡ bạn 24/7.</p>
+                    
+                    <h3>📞 Các Kênh Liên Hệ</h3>
+                    <div class="contact-methods">
+                        <div class="contact-item">
+                            <h4>☎️ Hotline</h4>
+                            <p><strong>0123456789</strong></p>
+                            <p class="text-muted">Từ 6:00 - 19:30 hàng ngày</p>
+                        </div>
+                        <div class="contact-item">
+                            <h4>📧 Email</h4>
+                            <p><strong>trangle231004@gmail.com</strong></p>
+                            <p class="text-muted">Phản hồi trong vòng 24 giờ</p>
+                        </div>
+                        <div class="contact-item">
+                            <h4>📍 Cửa Hàng</h4>
+                            <p><strong>20 Chi Nhánh</strong></p>
+                            <p class="text-muted">Trên khắp Đà Nẵng - Giao hàng trong 2 giờ</p>
+                        </div>
+                    </div>
+                    
+                    <h3>🔄 Chính Sách Đổi Trả</h3>
+                    <p>Chúng tôi cam kết chất lượng tuyệt đối. Nếu có bất kỳ vấn đề nào:</p>
+                    <ul>
+                        <li>Đổi sản phẩm hoặc hoàn tiền trong vòng <strong>7 ngày</strong> kể từ ngày mua</li>
+                        <li>Sản phẩm phải còn nguyên vỏ bao bì và hóa đơn mua hàng</li>
+                        <li>Không có câu hỏi nếu sản phẩm bị hỏng, lỗi từ nhà sản xuất</li>
+                        <li>Hoàn tiền toàn bộ nếu giao hàng sai loại hoặc hư hỏng</li>
+                    </ul>
+                    
+                    <h3>🚚 Chính Sách Giao Hàng</h3>
+                    <ul>
+                        <li><strong>Miễn phí giao hàng:</strong> Cho đơn hàng từ 500.000đ</li>
+                        <li><strong>Thời gian giao:</strong> 2 giờ tính từ lúc đặt hàng</li>
+                        <li><strong>Ngoài giờ:</strong> Có thể đặt lịch riêng vào buổi tối</li>
+                        <li><strong>An toàn:</strong> Hàng được đóng gói kín, giữ lạnh suốt quá trình vận chuyển</li>
+                    </ul>
+                    
+                    <h3>⭐ Chương Trình Thành Viên</h3>
+                    <p>Đăng ký thành viên VIP để nhận:</p>
+                    <ul>
+                        <li>Giảm giá 10% trên tất cả sản phẩm</li>
+                        <li>Ưu tiên giao hàng nhanh nhất</li>
+                        <li>Thông báo sớm về các chương trình khuyến mãi</li>
+                        <li>Tích điểm với mỗi lần mua, đổi thành quà tặng</li>
+                        <li>Ưu tiên hỗ trợ 24/7 từ đội ngũ chuyên biệt</li>
+                    </ul>
+                    
+                    <h3>❓ Câu Hỏi Thường Gặp</h3>
+                    <p><strong>Q: Làm sao để biết sản phẩm tươi hay không?</strong><br>
+                    A: Kiểm tra ngày sản xuất trên bao bì, chọn những sản phẩm gần đây nhất. Hương thơm tự nhiên, màu sắc tự nhiên là dấu hiệu tốt.</p>
+                    
+                    <p><strong>Q: Có giao hàng ngoài Đà Nẵng không?</strong><br>
+                    A: Hiện tại chúng tôi chỉ giao hàng tại Đà Nẵng. Bạn có thể ghé thăm 20 chi nhánh của chúng tôi trên toàn thành phố.</p>
+                    
+                    <p><strong>Q: Sản phẩm có chứa chất bảo quản không?</strong><br>
+                    A: Không. Tất cả sản phẩm đều không có chất bảo quản nhân tạo. Chúng tôi sử dụng chuỗi lạnh để giữ sản phẩm tươi.</p>
+                `
+            }
+        };
+
+        const sectionMap = {
+            'gioithieu': 'Giới thiệu',
+            'vanhua': 'Văn hóa',
+            'tailieu': 'Tài liệu hướng dẫn',
+            'hotro': 'Hỗ trợ khách hàng'
+        };
+
+        let currentSection = 'gioithieu';
+
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param) || 'gioithieu';
+        }
+
+        function renderArticle(section) {
+            const article = articleData[section];
+            const container = document.getElementById('articleContent');
+            
+            if (article) {
+                container.innerHTML = `
+                    <div class="article-box">
+                        ${article.content}
+                    </div>
+                `;
+                document.getElementById('articleName').textContent = sectionMap[section];
+            }
+        }
+
+        function init() {
+            currentSection = getQueryParam('section');
+            renderArticle(currentSection);
+
+            // Mark active section in sidebar
+            document.querySelectorAll('.section-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`a[href="AboutPage.html?section=${currentSection}"]`).classList.add('active');
+        }
+
+        // Initialize on load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tài khoản - Cửa hàng thực phẩm</title>
+    <link rel="icon" href="./assets/images/img_Logo.png" type="image/png">
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/HomePage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <style>
+        .account-container{ padding:38px 0; }
+        .account-title{ text-align:center; color:#6b2fbf; font-weight:700; margin-bottom:26px }
+        .account-card{ background:linear-gradient(180deg,#fbfff6,#f7fff9); padding:26px; border-radius:8px }
+        .form-label{ font-weight:600 }
+        .save-btn{ background:#c6e3ff; border:0; padding:8px 16px; border-radius:8px }
+        .left-col .form-control, .right-col .form-control{ border-radius:4px }
+        .note-red{ color:#d35400; font-style:italic }
+    </style>
+</head>
+<body>
+    <!-- Header component -->
+    <div id="header-container"></div>
+
+    <div class="container account-container">
+        <div class="row justify-content-center">
+            <div class="col-10">
+                <h2 class="account-title">TÀI KHOẢN</h2>
+                <div class="account-card">
+                    <div class="row">
+                        <div class="col-md-6 left-col">
+                            <div class="form-group">
+                                <label class="form-label">Tên *</label>
+                                <input id="firstName" class="form-control" type="text" placeholder="Tên">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Họ *</label>
+                                <input id="lastName" class="form-control" type="text" placeholder="Họ">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Tên hiển thị *</label>
+                                <input id="displayName" class="form-control" type="text" placeholder="Tên hiển thị">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Địa chỉ email *</label>
+                                <input id="email" class="form-control" type="email" placeholder="Email">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 right-col">
+                            <h5>Thay đổi mật khẩu</h5>
+                            <p class="note-red">Mật khẩu hiện tại (bỏ trống nếu không đổi)</p>
+                            <div class="form-group">
+                                <input id="currentPwd" class="form-control" type="password" placeholder="Mật khẩu hiện tại">
+                            </div>
+                            <p class="note-red">Mật khẩu mới (bỏ trống nếu không đổi)</p>
+                            <div class="form-group">
+                                <input id="newPwd" class="form-control" type="password" placeholder="Mật khẩu mới">
+                            </div>
+                            <p class="note-red">Xác nhận mật khẩu mới</p>
+                            <div class="form-group">
+                                <input id="confirmPwd" class="form-control" type="password" placeholder="Xác nhận mật khẩu mới">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12 text-center">
+                            <button id="saveAccount" class="btn save-btn">Lưu thay đổi</button>
+                            <div id="accountMessage" style="display:inline-block;margin-left:12px;vertical-align:middle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer component -->
+    <div id="footer-container"></div>
+
+    <!-- Modals container for login/register -->
+    <div id="modals-container"></div>
+
+    <script>
+        function escapeHtml(str){ return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+        document.addEventListener('DOMContentLoaded', function(){
+            // Redirect to homepage if not logged in
+            var current = null;
+            try{ current = JSON.parse(localStorage.getItem('currentUser')||'null'); }catch(e){ current = null; }
+            if(!current){ window.location.href = 'HomePage.html'; return; }
+
+            // Wait for header to load and show auth UI
+            function waitForHeader(cb){
+                var authEl = document.querySelector('.auth_input');
+                if(authEl) return cb(authEl);
+                setTimeout(function(){ waitForHeader(cb); }, 150);
+            }
+
+            waitForHeader(function(){
+                try{ if(typeof updateAuthUI === 'function') updateAuthUI(); }catch(e){}
+            });
+
+            // Prefill fields with currentUser data
+            var firstName = document.getElementById('firstName');
+            var lastName = document.getElementById('lastName');
+            var displayName = document.getElementById('displayName');
+            var email = document.getElementById('email');
+
+            firstName.value = current.firstName || '';
+            lastName.value = current.lastName || '';
+            displayName.value = current.username || current.phoneOrEmail || '';
+            email.value = current.email || current.phoneOrEmail || '';
+
+            document.getElementById('saveAccount').addEventListener('click', function(e){
+                e.preventDefault();
+                var curPwd = document.getElementById('currentPwd').value || '';
+                var newPwd = document.getElementById('newPwd').value || '';
+                var confirmPwd = document.getElementById('confirmPwd').value || '';
+
+                // Validate email
+                var emailVal = email.value.trim();
+                if(!emailVal){ showMsg('Vui lòng nhập email', true); return; }
+
+                // If changing password, validate current and confirmation
+                if(newPwd){
+                    // verify current matches stored password
+                    if(!current.password || curPwd !== current.password){ showMsg('Mật khẩu hiện tại không đúng', true); return; }
+                    if(newPwd !== confirmPwd){ showMsg('Mật khẩu xác nhận không khớp', true); return; }
+                    current.password = newPwd;
+                }
+
+                // Save profile fields
+                current.firstName = firstName.value.trim();
+                current.lastName = lastName.value.trim();
+                current.username = displayName.value.trim();
+                current.email = emailVal;
+
+                try{ localStorage.setItem('currentUser', JSON.stringify(current)); }catch(e){ console.warn('save currentUser failed', e); }
+
+                // Also update users list if exists
+                try{
+                    var users = JSON.parse(localStorage.getItem('users')||'[]');
+                    var idx = users.findIndex(u => u.phoneOrEmail === current.phoneOrEmail || u.email === current.email);
+                    if(idx >= 0){ users[idx] = current; localStorage.setItem('users', JSON.stringify(users)); }
+                }catch(e){ }
+
+                showMsg('Lưu thay đổi thành công', false);
+                // Refresh header display
+                try{ if(typeof updateAuthUI === 'function') updateAuthUI(); }catch(e){}
+            });
+
+            function showMsg(msg, isError){
+                var el = document.getElementById('accountMessage');
+                el.style.display = 'inline-block';
+                el.style.color = isError ? '#b33' : '#1b8a00';
+                el.textContent = msg;
+                setTimeout(function(){ el.textContent = ''; el.style.display = 'none'; }, 2500);
+            }
+        });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="assets/js/component-loader.js"></script>
+</body>
+</html>

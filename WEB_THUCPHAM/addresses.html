@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Địa chỉ - Cửa hàng thực phẩm</title>
+    <link rel="icon" href="./assets/images/img_Logo.png" type="image/png">
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/HomePage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <style>
+        .address-container{ padding:38px 0; }
+        .address-title{ text-align:center; color:#6b2fbf; font-weight:700; margin-bottom:26px }
+        .address-card{ background:linear-gradient(180deg,#fbfff6,#f7fff9); padding:26px; border-radius:8px }
+        .form-label{ font-weight:600 }
+        .save-btn{ background:#c6e3ff; border:0; padding:8px 16px; border-radius:8px }
+        .left-col .form-control, .right-col .form-control{ border-radius:4px }
+    </style>
+</head>
+<body>
+    <!-- Header component -->
+    <div id="header-container"></div>
+
+    <div class="container address-container">
+        <div class="row justify-content-center">
+            <div class="col-10">
+                <h2 class="address-title">ĐỊA CHỈ</h2>
+                <div class="address-card">
+                    <div class="row">
+                        <div class="col-md-6 left-col">
+                            <div class="form-group">
+                                <label class="form-label">Tên *</label>
+                                <input id="firstName" class="form-control" type="text" placeholder="Tên">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Họ *</label>
+                                <input id="lastName" class="form-control" type="text" placeholder="Họ">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Địa chỉ *</label>
+                                <input id="addressLine1" class="form-control" type="text" placeholder="Địa chỉ">
+                            </div>
+                            <div class="form-group">
+                                <input id="addressLine2" class="form-control" type="text" placeholder="Căn hộ, dãy phòng, đơn vị ... (không bắt buộc)">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 right-col">
+                            <div class="form-group">
+                                <label class="form-label">Thị trấn / Thành phố *</label>
+                                <input id="city" class="form-control" type="text" placeholder="Thị trấn / Thành phố">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Mã ZIP *</label>
+                                <input id="zip" class="form-control" type="text" placeholder="Mã ZIP">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Số điện thoại (liên hệ)</label>
+                                <input id="phone" class="form-control" type="text" placeholder="Số điện thoại">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12 text-center">
+                            <button id="saveAddress" class="btn save-btn">Lưu địa chỉ</button>
+                            <div id="addressMessage" style="display:inline-block;margin-left:12px;vertical-align:middle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer component -->
+    <div id="footer-container"></div>
+
+    <!-- Modals container for login/register -->
+    <div id="modals-container"></div>
+
+    <script>
+        function escapeHtml(str){ return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+        document.addEventListener('DOMContentLoaded', function(){
+            var current = null;
+            try{ current = JSON.parse(localStorage.getItem('currentUser')||'null'); }catch(e){ current = null; }
+            if(!current){ window.location.href = 'HomePage.html'; return; }
+
+            // Wait for header to load and show auth UI
+            function waitForHeader(cb){
+                var authEl = document.querySelector('.auth_input');
+                if(authEl) return cb(authEl);
+                setTimeout(function(){ waitForHeader(cb); }, 150);
+            }
+
+            waitForHeader(function(){
+                try{ if(typeof updateAuthUI === 'function') updateAuthUI(); }catch(e){}
+                try{ if(window.updateCartCount) updateCartCount(); }catch(e){}
+            });
+
+            // Fill fields with existing default address if present
+            var storedAddresses = JSON.parse(localStorage.getItem('addresses')||'[]');
+            var userAddresses = storedAddresses.filter(a => a.owner === (current.phoneOrEmail || current.email));
+            var defaultAddr = (current.address) ? current.address : (userAddresses.length?userAddresses[0]:null);
+
+            document.getElementById('firstName').value = (defaultAddr && defaultAddr.firstName) || (current.firstName||'');
+            document.getElementById('lastName').value = (defaultAddr && defaultAddr.lastName) || (current.lastName||'');
+            document.getElementById('addressLine1').value = (defaultAddr && defaultAddr.addressLine1) || '';
+            document.getElementById('addressLine2').value = (defaultAddr && defaultAddr.addressLine2) || '';
+            document.getElementById('city').value = (defaultAddr && defaultAddr.city) || '';
+            document.getElementById('zip').value = (defaultAddr && defaultAddr.zip) || '';
+            document.getElementById('phone').value = (defaultAddr && defaultAddr.phone) || (current.phone || '');
+
+            document.getElementById('saveAddress').addEventListener('click', function(e){
+                e.preventDefault();
+                var firstName = document.getElementById('firstName').value.trim();
+                var lastName = document.getElementById('lastName').value.trim();
+                var line1 = document.getElementById('addressLine1').value.trim();
+                var line2 = document.getElementById('addressLine2').value.trim();
+                var city = document.getElementById('city').value.trim();
+                var zip = document.getElementById('zip').value.trim();
+                var phone = document.getElementById('phone').value.trim();
+
+                if(!firstName || !lastName || !line1 || !city || !zip){ showMsg('Vui lòng điền đủ các trường bắt buộc', true); return; }
+
+                var addr = {
+                    owner: current.phoneOrEmail || current.email,
+                    firstName: firstName,
+                    lastName: lastName,
+                    addressLine1: line1,
+                    addressLine2: line2,
+                    city: city,
+                    zip: zip,
+                    phone: phone,
+                    createdAt: Date.now()
+                };
+
+                // Save to addresses list in localStorage
+                try{
+                    var addrs = JSON.parse(localStorage.getItem('addresses')||'[]');
+                    // add/replace first existing for this owner
+                    var idx = addrs.findIndex(a => a.owner === addr.owner);
+                    if(idx >= 0){ addrs[idx] = addr; } else { addrs.push(addr); }
+                    localStorage.setItem('addresses', JSON.stringify(addrs));
+                }catch(e){ console.warn('save addresses failed', e); }
+
+                // Also save as default address on currentUser
+                try{
+                    current.address = addr;
+                    localStorage.setItem('currentUser', JSON.stringify(current));
+                    var users = JSON.parse(localStorage.getItem('users')||'[]');
+                    var uidx = users.findIndex(u => u.phoneOrEmail === current.phoneOrEmail || u.email === current.email);
+                    if(uidx >=0){ users[uidx] = current; localStorage.setItem('users', JSON.stringify(users)); }
+                }catch(e){ console.warn('update currentUser address failed', e); }
+
+                showMsg('Lưu địa chỉ thành công', false);
+            });
+
+            function showMsg(msg, isError){
+                var el = document.getElementById('addressMessage');
+                el.style.display = 'inline-block';
+                el.style.color = isError ? '#b33' : '#1b8a00';
+                el.textContent = msg;
+                setTimeout(function(){ el.textContent = ''; el.style.display = 'none'; }, 2500);
+            }
+        });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="assets/js/component-loader.js"></script>
+</body>
+</html>
