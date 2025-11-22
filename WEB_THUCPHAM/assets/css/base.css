@@ -1,0 +1,204 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+a {
+  text-decoration: none;
+}
+ul {
+  margin: 0;
+}
+li {
+  list-style: none;
+  padding-left: 0;
+}
+:root {
+  --color-main: #2c9700;
+  --color-text: #ffffff;
+  --color-border: #d8d8d8;
+  --color-green1: #52ce22;
+  --color-green2: #9adc54;
+  --color-green3: #bbe78e;
+  --color-green4: #c9f641;
+  --color-green5: #e0f3c6;
+  --color-green6: #215f30;
+  --color-green7: #378c17;
+  --color-green8: #5eba01;
+  --color-green9: #7ac13d;
+  --color-green10: #95d066;
+}
+
+
+/* DAILY PROMOTIONS (Ưu đãi mỗi ngày) + best_sell_product*/
+/* === TIÊU ĐỀ CHUNG === */
+.best_sell_product .sell_title,
+.daily_promotions .sell_title {
+    background: var(--color-green7);
+    color: white;
+    width: auto;
+    max-width: 320px;
+    border-radius: 50px;
+    padding: 10px 20px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 16px;
+    box-shadow: 0 4px 15px var(--color-green5);
+    display: inline-block;
+}
+/* === CHỮ BÊN PHẢI === */
+.best_sell_product .essential_nutrition,
+.daily_promotions .essential_nutrition {
+    color: #28a745;
+    font-weight: 700;
+    font-size: 16px;
+    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+.best_sell_product .essential_nutrition:hover,
+.daily_promotions .essential_nutrition:hover {
+    color: #1e7e34;
+}
+.best_sell_product .essential_nutrition i,
+.daily_promotions .essential_nutrition i {
+    transition: transform 0.3s ease;
+}
+.best_sell_product .essential_nutrition:hover i,
+.daily_promotions .essential_nutrition:hover i {
+    transform: translateX(5px);
+}
+/* === SẢN PHẨM === */
+.product-card {
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    transition: all 0.35s ease;
+    text-align: center;
+    border: none;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+.product-card img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+.product-card:hover img {
+    transform: scale(1.05);
+}
+.product-card h6 {
+    font-size: 15px;
+    color: #333;
+    margin: 14px 12px 8px;
+    font-weight: 600;
+    flex-grow: 1;
+    line-height: 1.4;
+}
+.product-card .price {
+    color: #28a745;
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 14px;
+}
+/* === NÚT CAROUSEL – SỬA VỊ TRÍ === */
+.carousel-control-btn {
+    background: #28a745;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+    transition: all 0.3s ease;
+    border: none;
+    z-index: 10;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.prev-btn { left: -40px; }
+.next-btn { right: -40px; }
+.carousel-control-btn:hover {
+    background: #218838;
+    transform: translateY(-50%) scale(1.15);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+/* === CAROUSEL – XÓA px-5 === */
+.carousel-inner {
+    padding: 0 60px;
+}
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    .carousel-inner { padding: 0 40px; }
+    .carousel-control-btn { width: 45px; height: 45px; }
+    .prev-btn { left: 5px; }
+    .next-btn { right: 5px; }
+    .sell_title { 
+        font-size: 16px; 
+        padding: 10px 24px; 
+        max-width: 260px;
+    }
+    .essential_nutrition { font-size: 15px; }
+}
+/* end DAILY PROMOTIONS (Ưu đãi mỗi ngày) + best_sell_product */
+
+
+
+/* FOOTER */
+.footer{
+    background: var(--color-green6);
+    color: white;
+    padding: 40px 0px;
+}
+.footer .footer_head {
+    font-size: 18px;
+    font-weight: bold;
+}
+.footer .footer_info .desc_info i {
+    color: var(--color-green2);
+}
+.footer .footer_info .desc_info p {
+    font-style: italic;
+    color: rgb(245, 245, 112);
+}
+.footer .footer_connect {
+    text-align: center;
+}
+.footer .footer_connect i{
+    font-size: 25px;
+    margin: 20px 0px 0px 5px;
+}
+.footer .footer_connect i:nth-child(1){
+    color: rgb(80, 80, 240);
+}
+.footer .footer_connect i:nth-child(2){
+    color: rgb(235, 235, 62);
+}
+.footer .footer_connect i:nth-child(3){
+    color: pink;
+}
+.footer .footer_connect i:nth-child(4){
+    color: red;
+}
+/* END FOOTER */
+
+@media (min-width: 1200px) {
+  .col-xl-20 {
+    -ms-flex: 0 0 20%;
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
+}
