@@ -664,16 +664,7 @@ Phong cách: Thân thiện, nhiệt tình, chuyên nghiệp, tin cậy 🌿`;
 
 // Initialize chatbox
 document.addEventListener('DOMContentLoaded', function() {
-    // Lấy API key từ file config.js (file này không được commit lên git)
-    const GROQ_API_KEY = typeof API_CONFIG !== 'undefined' ? API_CONFIG.GROQ_API_KEY : 'YOUR_GROQ_API_KEY_HERE';
-    
-    if (GROQ_API_KEY === 'YOUR_GROQ_API_KEY_HERE') {
-        console.warn('⚠️ Chưa cấu hình API key!');
-        console.warn('💡 Hướng dẫn:');
-        console.warn('   1. Copy file config.example.js thành config.js');
-        console.warn('   2. Thay YOUR_GROQ_API_KEY_HERE bằng key thật từ https://console.groq.com/keys');
-        return;
-    }
+    const GROQ_API_KEY = '---------------------------';
     
     try {
         window.aiChatbox = new AIChatbox(GROQ_API_KEY);
